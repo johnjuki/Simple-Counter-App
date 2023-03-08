@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import Counter from './Counter';
 import './index.css';
 
-function Counter() {
-  const [counter, setCounter] = useState(0);
-
-  function increment() {
-    setCounter(counter + 1);
+const initialState = {
+  count: 0
+};
+// Reducer function
+function reducer(state = initialState, action) {
+  switch(action.type) {
+    case 'INCREMENT':
+      return { count: state.count + action.num };
+    default:
+      return state;
   }
-
-  return <div>
-    <p>{counter}</p>
-    <button onClick={increment}>Increment</button>
-  </div>;
 }
 
-const el = <Counter />;
+const store = createStore(reducer);
+const el = <Provider store={store}>
+          <Counter/>
+        </Provider>; 
+
 ReactDOM.render(
-  el,
+  el, 
   document.getElementById('root')
 );
